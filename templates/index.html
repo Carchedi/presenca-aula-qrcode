@@ -12,7 +12,6 @@
       crossorigin="anonymous"
     />
     <style>
-      /* Seus estilos existentes... */
       #qrCodeContainer img {
         max-width: 300px; /* Ajuste conforme necessário */
         height: auto;
@@ -29,8 +28,7 @@
       }
       /* Estilo para o container do seletor de turma */
       #turmaSelectContainer {
-        /* Começa escondido */
-        /* Adicionado via JS quando a data é selecionada */
+        /* Começa escondido, adicionado via JS quando a data é selecionada */
       }
     </style>
   </head>
@@ -42,17 +40,14 @@
         <div class="col-md-6">
           <!-- Seletor de Data -->
           <div class="mb-3">
-            <label for="dataSelect" class="form-label"
-              >1. Selecione a Data:</label
-            >
+            <label for="dataSelect" class="form-label">Selecione a Data:</label>
             <input type="date" class="form-control" id="dataSelect" />
           </div>
-          <!-- FIM DO SELETOR DE DATA -->
 
           <!-- Container do Seletor de Turma (inicialmente escondido) -->
           <div id="turmaSelectContainer" class="mb-3" style="display: none">
             <label for="turmaSelect" class="form-label"
-              >2. Selecione a Turma:</label
+              >Selecione a Turma:</label
             >
             <select class="form-select" id="turmaSelect">
               <option selected disabled value="">
@@ -63,7 +58,6 @@
               {% endfor %}
             </select>
           </div>
-          <!-- FIM DO CONTAINER DO SELETOR DE TURMA -->
 
           <!-- Área para exibir o QR Code e informações -->
           <div id="qrCodeResult" class="text-center mt-4">
@@ -75,7 +69,8 @@
               <span class="visually-hidden">Gerando QR Code...</span>
             </div>
             <div id="qrCodeContainer"></div>
-            <!-- Atualizaremos esta info via JS -->
+
+            <!-- Atualiza esta info via JS -->
             <p id="selecaoInfo" class="mt-2 fw-bold"></p>
             <p id="instrucaoScan" class="text-muted" style="display: none">
               Escaneie o código acima, preencha o formulário e registre sua
@@ -101,13 +96,13 @@
       crossorigin="anonymous"
     ></script>
 
-    <!-- Nosso JavaScript Modificado -->
+    <!-- JavaScript -->
     <script>
       // Pega referências aos elementos HTML
       const dataSelect = document.getElementById("dataSelect");
       const turmaSelectContainer = document.getElementById(
         "turmaSelectContainer"
-      ); // Novo container
+      );
       const turmaSelect = document.getElementById("turmaSelect");
       const qrCodeContainer = document.getElementById("qrCodeContainer");
       const selecaoInfo = document.getElementById("selecaoInfo");

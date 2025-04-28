@@ -4,16 +4,13 @@ import base64
 from flask import Flask, render_template, request, jsonify
 # Importar a biblioteca qrcode
 import qrcode
-# Importar o dicionário de links do arquivo form_data.py
+
+# Importa a lista de turmas
+from turmas import TURMAS
+# Importa o dicionário de links do arquivo form_data.py
 from form_data import FORM_LINKS
 
 app = Flask(__name__)
-
-# --- Configuração ---
-# Lista de turmas disponíveis
-TURMAS = ["DCC119 C - Seg / Qui 8h","DC5199 A - Ter 8h","DC5199 B - Ter 10h", "DC5199 G - Qua 8h","DC5199 HH - Qua 10h"]
-# --------------------
- 
 
 # Rota principal - passa a lista de turmas para o template
 @app.route('/')

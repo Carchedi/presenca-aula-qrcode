@@ -1,0 +1,24 @@
+# Ambientes Virtuais
+venv/
+env/
+*.venv
+.env
+
+# Arquivos Python compilados
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Arquivos de configuração de IDEs
+.vscode/
+.idea/
+
+# Arquivos de dependências (se usar pip freeze > requirements.txt)
+# *.egg-info/
+
+# Outros
+.DS_Store
+*.log
+
+
+form_data.py

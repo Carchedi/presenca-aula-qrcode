@@ -13,7 +13,6 @@ Este é um projeto simples em Flask (Python) que gera QR Codes para links de for
 
 *   Python 3.6 ou superior
 *   pip (gerenciador de pacotes do Python)
-*   (Opcional, mas recomendado) Um ambiente virtual (`venv` ou `virtualenv`)
 
 ## Configuração do Ambiente
 
@@ -23,16 +22,7 @@ Este é um projeto simples em Flask (Python) que gera QR Codes para links de for
     cd <pasta-do-projeto>
     ```
 
-2.  **Crie o arquivo `requirements.txt`:**
-    Crie um arquivo chamado `requirements.txt` na raiz do projeto com o seguinte conteúdo:
-
-    ```txt
-    Flask
-    qrcode[pil]
-    ```
-    *Nota: `qrcode[pil]` garante que a biblioteca Pillow, necessária para gerar imagens PNG, seja instalada junto com o `qrcode`.*
-
-4.  **Instale as Dependências:**
+2.  **Instale as Dependências:**
     ```bash
     pip install -r requirements.txt
     ```

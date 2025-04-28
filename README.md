@@ -2,6 +2,11 @@
 
 Este é um projeto simples em Flask (Python) que gera QR Codes para links de formulários (como Google Forms) com base na turma e na data selecionadas. O objetivo é gerar, para cada aula, um QRCode com o link de um formulário de presença específico.
 
+## Resumo:
+* Crie um formulário de presença para **cada** aula
+* Atribua no código os nomes da aulas, tal como as datas e o link do formulário pra cada aula
+* Rode o código e gere o QRCode com o link do formulário a cada aula 
+
 ## Funcionalidades
 
 *   Interface web para selecionar a turma e a data.

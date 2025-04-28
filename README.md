@@ -1,42 +1,51 @@
-# 📚 Gerador de QR Code para Formulários de Presença
+# Gerador de QR Code para Registro de Presença
 
-Este é um projeto simples em Flask (Python) que gera QR Codes para links de formulários (como Google Forms) com base na turma e na data selecionadas. O objetivo é gerar, para cada aula, um QRCode com o link de um formulário de presença específico.
+Este projeto permite gerar QR Codes dinamicamente para registrar a presença em aulas ou eventos, gerando QR Code para acesso rápido a formulários de presença associados a uma turma e data específicas.
 
-## Resumo:
-* Crie um formulário de presença para **cada** aula
-* Atribua no código os nomes da aulas, tal como as datas e o link do formulário pra cada aula
-* Rode o código e gere o QRCode com o link do formulário a cada aula 
+## Resumo Rápido
+
+-   Crie um formulário de presença para cada aula (o QR Code gerado apontará para este formulário).
+-   Configure as turmas, datas e o link base do formulário no código backend (Python/Flask).
+-   Rode o projeto e utilize a interface web para gerar o QR Code para a aula desejada.
+
+## Descrição
+
+A aplicação web fornece uma interface simples onde o usuário seleciona uma data e, em seguida, uma turma. Ao selecionar ambos, um QR Code é gerado dinamicamente. Este QR Code contém um link (configurado no backend) que direciona para um formulário online (como Google Forms) para que os participantes possam registrar sua presença escaneando o código com seus smartphones.
 
 ## Funcionalidades
 
-*   Interface web para selecionar a turma e a data.
-*   Geração dinâmica de QR Code correspondente ao link do formulário da aula selecionada.
-*   Configuração centralizada dos nomes das turmas e dos links dos formulários em arquivos Python.
-*   Fácil de executar localmente.
+-   Seleção de data através de um calendário.
+-   Seleção de turma a partir de uma lista pré-definida (configurada no backend).
+-   Geração dinâmica de QR Code via chamada assíncrona para o backend.
+-   Exibição do QR Code gerado na página.
 
-## Pré-requisitos
+## Tecnologias Utilizadas
 
-*   Python 3.6 ou superior
-*   pip (gerenciador de pacotes do Python)
+-   **Frontend:** HTML, CSS, JavaScript, Bootstrap 5
+-   **Backend:** Python, Flask e qrcode[pil] (Biblioteca de Geração de QR Code)
+-   **Templating:** Jinja2 (integrado ao Flask)
 
-## Configuração do Ambiente
+## Requisitos
 
-1.  **Clone o Repositório (ou baixe os arquivos):**
+-   Python 3.x
+-   Pip (gerenciador de pacotes Python)
+-   Bibliotecas Python (listadas em `requirements.txt` - *você precisará criar este arquivo*)
+    -   Flask
+    -   qrcode (`pip install qrcode[pil]`) 
+
+## Instalação e Configuração
+
+1.  **Clone o repositório:**
     ```bash
     git clone https://github.com/Carchedi/presenca-aula-qrcode.git # Ou simplesmente coloque os arquivos em uma pasta
     cd <pasta-do-projeto>
     ```
 
-2.  **Instale as Dependências:**
-    ```bash
-    pip install Flask qrcode[pil]
-    ```
+2. **Instale as dependências:**
+       pip install flask
+       pip install qrcode[pil]
 
-## Configuração do Projeto
-
-Antes de executar a aplicação, é **necessário** configurar suas turmas e os links dos formulários correspondentes.
-
-1.  **Configure as Turmas (`turmas.py`):**
+3. **Configure as Turmas (`turmas.py`):**
     *   Abra o arquivo `turmas.py`.
     *   Edite a lista `TURMAS` para incluir os nomes exatos das suas turmas. Estes nomes serão exibidos no seletor da página web.
     *   Exemplo:
@@ -48,7 +57,7 @@ Antes de executar a aplicação, é **necessário** configurar suas turmas e os 
         ]
         ```
 
-2.  **Configure os Links dos Formulários (`form_data.py`):**
+4.  **Configure os Links dos Formulários (`form_data.py`):**
     *   Abra o arquivo `form_data.py`.
     *   Edite o dicionário `FORM_LINKS`.
     *   As **chaves principais** deste dicionário devem ser **exatamente iguais** aos nomes das turmas definidos em `turmas.py`.
@@ -72,30 +81,35 @@ Antes de executar a aplicação, é **necessário** configurar suas turmas e os 
         }
         ```
     *   **IMPORTANTE:** Se uma combinação de turma e data selecionada pelo usuário não existir no dicionário `FORM_LINKS`, um erro será exibido na interface web e nenhum QR Code será gerado.
+ 
 
-## Executando a Aplicação
+## Uso
 
-1.  Navegue até o diretório raiz do projeto no seu terminal.
-2.  Execute o script principal:
+1.  **Execute a aplicação Flask:**
     ```bash
-    python app.py
+     python3 app.py
     ```
-3.  A aplicação Flask será iniciada. Por padrão, ela estará acessível no seu navegador web em:
-    `http://127.0.0.1:5000` ou `http://localhost:5000`
-    *   O uso de `host='0.0.0.0'` no `app.run` torna a aplicação acessível por outros dispositivos na mesma rede local, usando o endereço IP da máquina onde o servidor está rodando (ex: `http://192.168.1.10:5000`).
 
-## Como Usar
+2.  **Acesse a aplicação:**
+    Abra seu navegador e vá para o endereço fornecido pelo Flask (geralmente `http://127.0.0.1:5000`).
 
-1.  Abra o endereço da aplicação no seu navegador.
-2.  Selecione a **Turma** desejada no menu suspenso.
-3.  Selecione a **Data** da aula usando o seletor de data.
-4.  Clique no botão "Gerar QR Code".
-5.  Se um link correspondente à turma e data selecionadas existir no arquivo `form_data.py`, o QR Code será exibido abaixo do botão. Caso contrário, uma mensagem de erro será mostrada.
-6.  Mostre o QR Code gerado para que os alunos possam escaneá-lo e acessar o formulário de presença.
+3.  **Gere o QR Code:**
+    -   A data atual será selecionada por padrão. Se necessário, escolha outra data.
+    -   Selecione a turma desejada na lista suspensa que aparecerá (essas turmas foram definidas no Array 'TURMAS').
+    -   Será gerado e exibido um QRCode com o link do formulário adicionado em 'FORM_LINKS' para aquela turma naquela data.
 
-## Tecnologias Utilizadas
+4.  **Registre a Presença:**
+    -   Exiba o QR Code para os participantes (ex: em um projetor).
+    -   Os participantes devem escanear o código com seus smartphones.
+    -   Eles serão redirecionados para o formulário de presença configurado para preencherem seus dados.
 
-*   Python
-*   Flask (Microframework Web)
-*   qrcode (Biblioteca para geração de QR Code)
-*   HTML/CSS/JavaScript (Para a interface do usuário)
+## Como Funciona
+
+1.  O usuário acessa a página inicial (`index.html`).
+2.  O JavaScript define a data atual no seletor de data.
+3.  Ao selecionar uma data, o seletor de turmas é exibido.
+4.  Ao selecionar uma turma (e com a data já selecionada), o JavaScript envia uma requisição POST para o endpoint `/generate_qr` no backend Flask, contendo a turma e a data selecionadas em formato JSON.
+5.  O backend Flask recebe a requisição, constrói a URL do formulário (incluindo turma e data, se configurado), gera um QR Code para essa URL e o converte para uma string Base64.
+6.  O backend retorna a string Base64 do QR Code em uma resposta JSON.
+7.  O JavaScript no frontend recebe a resposta, decodifica a imagem Base64 e a exibe na tag `<img>` dentro do container `qrCodeContainer`.
+8.  Instruções para escanear o código são exibidas.

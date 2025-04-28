@@ -14,7 +14,7 @@
     <style>
       /* Seus estilos existentes... */
       #qrCodeContainer img {
-        max-width: 300px;
+        max-width: 300px; /* Ajuste conforme necessário */
         height: auto;
         margin-top: 20px;
         display: block;
@@ -25,7 +25,12 @@
         display: none;
       }
       #qrCodeResult {
-        min-height: 350px;
+        min-height: 350px; /* Altura mínima para acomodar QR e texto */
+      }
+      /* Estilo para o container do seletor de turma */
+      #turmaSelectContainer {
+        /* Começa escondido */
+        /* Adicionado via JS quando a data é selecionada */
       }
     </style>
   </head>
@@ -35,17 +40,19 @@
 
       <div class="row justify-content-center">
         <div class="col-md-6">
-          <!-- NOVO: Seletor de Data -->
+          <!-- Seletor de Data -->
           <div class="mb-3">
-            <label for="dataSelect" class="form-label">Selecione a Data:</label>
+            <label for="dataSelect" class="form-label"
+              >1. Selecione a Data:</label
+            >
             <input type="date" class="form-control" id="dataSelect" />
           </div>
-          <!-- FIM DO NOVO SELETOR DE DATA -->
+          <!-- FIM DO SELETOR DE DATA -->
 
-          <!-- Seletor de Turma -->
-          <div class="mb-3">
+          <!-- Container do Seletor de Turma (inicialmente escondido) -->
+          <div id="turmaSelectContainer" class="mb-3" style="display: none">
             <label for="turmaSelect" class="form-label"
-              >Selecione a Turma:</label
+              >2. Selecione a Turma:</label
             >
             <select class="form-select" id="turmaSelect">
               <option selected disabled value="">
@@ -56,6 +63,7 @@
               {% endfor %}
             </select>
           </div>
+          <!-- FIM DO CONTAINER DO SELETOR DE TURMA -->
 
           <!-- Área para exibir o QR Code e informações -->
           <div id="qrCodeResult" class="text-center mt-4">
@@ -70,7 +78,8 @@
             <!-- Atualizaremos esta info via JS -->
             <p id="selecaoInfo" class="mt-2 fw-bold"></p>
             <p id="instrucaoScan" class="text-muted" style="display: none">
-              Peça aos alunos para escanearem o código acima.
+              Escaneie o código acima, preencha o formulário e registre sua
+              presença.
             </p>
           </div>
 
@@ -92,40 +101,49 @@
       crossorigin="anonymous"
     ></script>
 
-    <!-- Nosso JavaScript (ainda não modificado para usar a data) -->
+    <!-- Nosso JavaScript Modificado -->
     <script>
       // Pega referências aos elementos HTML
+      const dataSelect = document.getElementById("dataSelect");
+      const turmaSelectContainer = document.getElementById(
+        "turmaSelectContainer"
+      ); // Novo container
       const turmaSelect = document.getElementById("turmaSelect");
-      const dataSelect = document.getElementById("dataSelect"); // Já existia
       const qrCodeContainer = document.getElementById("qrCodeContainer");
-      const selecaoInfo = document.getElementById("selecaoInfo"); // Já existia
+      const selecaoInfo = document.getElementById("selecaoInfo");
       const instrucaoScan = document.getElementById("instrucaoScan");
       const loadingSpinner = document.getElementById("loadingSpinner");
       const errorMessageDiv = document.getElementById("errorMessage");
+
+      // Função para limpar a área do QR Code e mensagens
+      function clearQrArea() {
+        qrCodeContainer.innerHTML = "";
+        selecaoInfo.textContent = "";
+        instrucaoScan.style.display = "none";
+        errorMessageDiv.style.display = "none";
+        errorMessageDiv.textContent = "";
+        loadingSpinner.style.display = "none"; // Garante que o spinner suma
+      }
 
       // Função para buscar e exibir o QR Code
       async function fetchAndDisplayQrCode() {
         const selectedTurma = turmaSelect.value;
         const selectedDate = dataSelect.value; // Pega o valor da data (formato AAAA-MM-DD)
 
-        // Limpa o estado anterior sempre que a função é chamada
-        qrCodeContainer.innerHTML = "";
-        selecaoInfo.textContent = "";
-        instrucaoScan.style.display = "none";
-        errorMessageDiv.style.display = "none";
-        errorMessageDiv.textContent = "";
+        // Limpa o estado anterior ANTES de verificar
+        clearQrArea();
 
         // Só prossegue se AMBOS, turma E data, estiverem selecionados
         if (!selectedTurma || !selectedDate) {
-          // Poderia adicionar uma mensagem tipo "Selecione turma e data"
-          // console.log("Turma ou data não selecionada.");
+          // Não faz nada se um dos campos não estiver selecionado
+          // console.log("Turma ou data não selecionada para gerar QR Code.");
           return;
         }
 
-        // Formata a data para exibição (DD/MM/AAAA) - Opcional, mas melhora a UI
-        let displayDate = selectedDate; // Usa AAAA-MM-DD por padrão
+        // Formata a data para exibição (DD/MM/AAAA)
+        let displayDate = selectedDate;
         try {
-          const dateParts = selectedDate.split("-"); // [AAAA, MM, DD]
+          const dateParts = selectedDate.split("-");
           if (dateParts.length === 3) {
             displayDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
           }
@@ -136,13 +154,11 @@
         loadingSpinner.style.display = "block"; // Mostra o spinner
 
         try {
-          // ENVIA AMBOS: turma e data (no formato AAAA-MM-DD)
           const response = await fetch("/generate_qr", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            // Envia turma e data no corpo da requisição
             body: JSON.stringify({ turma: selectedTurma, data: selectedDate }),
           });
 
@@ -150,7 +166,6 @@
 
           if (!response.ok) {
             const errorData = await response.json().catch(() => null);
-            // Tenta pegar a mensagem de erro específica do backend
             const errorMsg =
               errorData?.error ||
               `Erro ${response.status}: ${response.statusText}`;
@@ -159,35 +174,73 @@
 
           const data = await response.json();
 
-          // Verifica se o backend retornou o QR code
           if (data.qr_code) {
             const img = document.createElement("img");
             img.src = data.qr_code;
-            // Atualiza o alt text com turma e data formatada
             img.alt = `QR Code para ${selectedTurma} - ${displayDate}`;
-            img.classList.add("img-fluid");
+            img.classList.add("img-fluid"); // Bootstrap class para imagem responsiva
 
             qrCodeContainer.appendChild(img);
-            // Atualiza a informação exibida com turma e data formatada
             selecaoInfo.textContent = `QR Code para: ${selectedTurma} - ${displayDate}`;
-            instrucaoScan.style.display = "block"; // Mostra a instrução
+            instrucaoScan.style.display = "block";
           } else {
-            // Caso o backend não retorne QR code (ex: link não encontrado)
-            // O erro já deve ter sido tratado no !response.ok, mas é uma segurança extra
             throw new Error(data.error || "Resposta inválida do servidor.");
           }
         } catch (error) {
           console.error("Erro ao gerar QR Code:", error);
-          loadingSpinner.style.display = "none"; // Garante que o spinner suma em caso de erro
-          errorMessageDiv.textContent = `Erro: ${error.message}`; // Exibe a mensagem de erro
+          loadingSpinner.style.display = "none";
+          errorMessageDiv.textContent = `Erro: ${error.message}`;
           errorMessageDiv.style.display = "block";
         }
       }
 
-      // Adiciona listeners para AMBOS os seletores
-      // Qualquer mudança em um deles tentará gerar o QR Code (se ambos tiverem valor)
+      // Listener para o seletor de DATA
+      dataSelect.addEventListener("change", () => {
+        const selectedDate = dataSelect.value;
+
+        if (selectedDate) {
+          // Se uma data foi selecionada, mostra o seletor de turma
+          turmaSelectContainer.style.display = "block";
+          // Não chama fetchAndDisplayQrCode aqui, espera a seleção da turma
+        } else {
+          // Se a data foi limpa, esconde o seletor de turma
+          turmaSelectContainer.style.display = "none";
+          // Reseta o valor do seletor de turma para o placeholder
+          turmaSelect.value = "";
+          // Limpa a área do QR Code
+          clearQrArea();
+        }
+        // Limpa a área do QR sempre que a data muda,
+        // forçando a seleção de uma turma novamente.
+        clearQrArea();
+      });
+
+      // Listener para o seletor de TURMA
+      // Só tenta gerar o QR Code quando a turma é alterada (e a data já deve estar selecionada)
       turmaSelect.addEventListener("change", fetchAndDisplayQrCode);
-      dataSelect.addEventListener("change", fetchAndDisplayQrCode);
+
+      function setInitialDate() {
+        const today = new Date();
+        const year = today.getFullYear();
+        // getMonth() retorna 0-11, então adicionamos 1
+        // padStart garante que tenhamos dois dígitos (ex: 01, 05, 11)
+        const month = String(today.getMonth() + 1).padStart(2, "0");
+        const day = String(today.getDate()).padStart(2, "0");
+
+        const formattedDate = `${year}-${month}-${day}`; // Formato YYYY-MM-DD
+        dataSelect.value = formattedDate;
+
+        // Dispara o evento 'change' manualmente para mostrar o seletor de turma
+        // Usamos 'new Event' para compatibilidade
+        const changeEvent = new Event("change");
+        dataSelect.dispatchEvent(changeEvent);
+
+        // Opcional: Se quiser limpar a área do QR ao carregar (caso a data já esteja setada)
+        //clearQrArea(); // Descomente se necessário
+      }
+
+      // Chama a função para definir a data inicial quando o script for executado
+      setInitialDate();
     </script>
   </body>
 </html>

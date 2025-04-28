@@ -18,7 +18,7 @@ Este é um projeto simples em Flask (Python) que gera QR Codes para links de for
 
 1.  **Clone o Repositório (ou baixe os arquivos):**
     ```bash
-    git clone https://github.com/Carchedi/presenca-aula-qrcode (https://github.com/Carchedi/presenca-aula-qrcode.git)# Ou simplesmente coloque os arquivos em uma pasta
+    git clone https://github.com/Carchedi/presenca-aula-qrcode.git # Ou simplesmente coloque os arquivos em uma pasta
     cd <pasta-do-projeto>
     ```
 

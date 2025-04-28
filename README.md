@@ -42,8 +42,10 @@ A aplicação web fornece uma interface simples onde o usuário seleciona uma da
     ```
 
 2. **Instale as dependências:**
+    ```bash
        pip install flask
        pip install qrcode[pil]
+    ```
 
 3. **Configure as Turmas (`turmas.py`):**
     *   Abra o arquivo `turmas.py`.

@@ -1,6 +1,6 @@
 # 📚 Gerador de QR Code para Formulários de Presença
 
-Este é um projeto simples em Flask (Python) que gera QR Codes para links de formulários (como Google Forms) com base na turma e na data selecionadas. O objetivo é facilitar o compartilhamento de links de presença específicos para cada aula.
+Este é um projeto simples em Flask (Python) que gera QR Codes para links de formulários (como Google Forms) com base na turma e na data selecionadas. O objetivo é gerar, para cada aula, um QRCode com o link de um formulário de presença específico.
 
 ## Funcionalidades
 
@@ -29,7 +29,7 @@ Este é um projeto simples em Flask (Python) que gera QR Codes para links de for
 
 ## Configuração do Projeto
 
-Antes de executar a aplicação, você **precisa** configurar suas turmas e os links dos formulários correspondentes.
+Antes de executar a aplicação, é **necessário** configurar suas turmas e os links dos formulários correspondentes.
 
 1.  **Configure as Turmas (`turmas.py`):**
     *   Abra o arquivo `turmas.py`.
@@ -37,8 +37,8 @@ Antes de executar a aplicação, você **precisa** configurar suas turmas e os l
     *   Exemplo:
         ```python
         TURMAS = [
-            "Nome da Turma 1 - Horário",
-            "Nome da Turma 2 - Horário",
+            "Nome da Turma 1 - Dia/Horário",
+            "Nome da Turma 2 - Dia/Horário",
             "Outra Turma - Dia/Hora"
         ]
         ```
@@ -70,13 +70,12 @@ Antes de executar a aplicação, você **precisa** configurar suas turmas e os l
 
 ## Executando a Aplicação
 
-1.  Certifique-se de que seu ambiente virtual (se estiver usando um) está ativado.
-2.  Navegue até o diretório raiz do projeto no seu terminal.
-3.  Execute o script principal:
+1.  Navegue até o diretório raiz do projeto no seu terminal.
+2.  Execute o script principal:
     ```bash
     python app.py
     ```
-4.  A aplicação Flask será iniciada. Por padrão, ela estará acessível no seu navegador web em:
+3.  A aplicação Flask será iniciada. Por padrão, ela estará acessível no seu navegador web em:
     `http://127.0.0.1:5000` ou `http://localhost:5000`
     *   O uso de `host='0.0.0.0'` no `app.run` torna a aplicação acessível por outros dispositivos na mesma rede local, usando o endereço IP da máquina onde o servidor está rodando (ex: `http://192.168.1.10:5000`).
 

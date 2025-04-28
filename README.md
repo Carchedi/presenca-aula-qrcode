@@ -24,7 +24,7 @@ Este é um projeto simples em Flask (Python) que gera QR Codes para links de for
 
 2.  **Instale as Dependências:**
     ```bash
-    pip install -r requirements.txt
+    pip install Flask qrcode[pil]
     ```
 
 ## Configuração do Projeto
